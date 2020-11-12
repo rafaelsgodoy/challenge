@@ -1,0 +1,116 @@
+import React from 'react';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  colors,
+  makeStyles
+} from '@material-ui/core';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import MoneyIcon from '@material-ui/icons/Money';
+import { usePromise } from 'promise-hook';
+import Mock from '../../../api/mock';
+import { Skeleton } from '@material-ui/lab';
+import CardLoader from '../../../components/CardLoader';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100%'
+  },
+  avatar: {
+    backgroundColor: '#E2645A',
+    height: 56,
+    width: 56
+  },
+  differenceIcon: {
+    color: colors.red[900]
+  },
+  differenceValue: {
+    color: colors.red[900],
+    marginRight: theme.spacing(1)
+  }
+}));
+
+const Budget = ({ className, ...rest }) => {
+  const classes = useStyles();
+  const { isLoading, data, error } = usePromise(Mock.getInvoices, { resolve: true });
+
+  return (
+
+
+    <Card
+      className={clsx(classes.root, className)}
+      {...rest}
+    >
+      <CardContent>
+
+        {
+          isLoading ?
+            <CardLoader />
+            :
+            <>
+              <Grid
+                container
+                justify="space-between"
+                spacing={3}
+              >
+                <Grid item>
+                  <Typography
+                    color="textSecondary"
+                    gutterBottom
+                    variant="h6"
+                  >
+                    BUDGET
+                  </Typography>
+                  <Typography
+                    color="textPrimary"
+                    variant="h3"
+                  >
+                    $ {data[0].AMOUNT}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Avatar className={classes.avatar}>
+                    <MoneyIcon />
+                  </Avatar>
+                </Grid>
+              </Grid>
+              <Box
+                mt={2}
+                display="flex"
+                alignItems="center"
+              >
+                <ArrowDownwardIcon className={classes.differenceIcon} />
+                <Typography
+                  className={classes.differenceValue}
+                  variant="body2"
+                >
+                  12%
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="caption"
+                >
+                  Since last month
+                </Typography>
+              </Box>
+            </>
+        }
+
+      </CardContent>
+
+    </Card>
+
+  );
+};
+
+Budget.propTypes = {
+  className: PropTypes.string
+};
+
+export default Budget;
