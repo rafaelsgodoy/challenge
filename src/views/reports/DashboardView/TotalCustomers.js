@@ -13,10 +13,13 @@ import {
 } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import {usePromise} from "promise-hook";
+import Mock from "../../../api/mock";
+import CardLoader from "../../../components/CardLoader";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%'
+   // height: '100%'
   },
   avatar: {
     backgroundColor: '#DB5D79',
@@ -32,60 +35,50 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TotalCustomers = ({ className, ...rest }) => {
+const TotalCustomers = ({className, ...rest}) => {
   const classes = useStyles();
-
+  const {isLoading, data, error} = usePromise(Mock.getCustomers, {
+    resolve: true,
+  });
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
       <CardContent>
+
+
         <Grid
           container
           justify="space-between"
           spacing={3}
         >
-          <Grid item>
-            <Typography
-              color="textSecondary"
-              gutterBottom
-              variant="h6"
-            >
-              TOTAL CUSTOMERS
-            </Typography>
-            <Typography
-              color="textPrimary"
-              variant="h3"
-            >
-              1,600
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <PeopleIcon />
-            </Avatar>
-          </Grid>
+          {
+            isLoading ?  <CardLoader/> :
+              <>
+                <Grid item>
+                  <Typography
+                    color="textSecondary"
+                    gutterBottom
+                    variant="h6"
+                  >
+                    TOTAL DE CLIENTES
+                  </Typography>
+                  <Typography
+                    color="textPrimary"
+                    variant="h3"
+                  >
+                    {data.length}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Avatar className={classes.avatar}>
+                    <PeopleIcon/>
+                  </Avatar>
+                </Grid>
+              </>
+          }
         </Grid>
-        <Box
-          mt={2}
-          display="flex"
-          alignItems="center"
-        >
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </Box>
       </CardContent>
     </Card>
   );

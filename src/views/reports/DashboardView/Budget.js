@@ -13,14 +13,16 @@ import {
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MoneyIcon from '@material-ui/icons/Money';
-import { usePromise } from 'promise-hook';
+import {usePromise} from 'promise-hook';
 import Mock from '../../../api/mock';
-import { Skeleton } from '@material-ui/lab';
+import {Skeleton} from '@material-ui/lab';
 import CardLoader from '../../../components/CardLoader';
+import _ from 'loadsh';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%'
+   // height: '100%'
   },
   avatar: {
     backgroundColor: '#E2645A',
@@ -36,9 +38,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Budget = ({ className, ...rest }) => {
+const Budget = ({className, ...rest}) => {
   const classes = useStyles();
-  const { isLoading, data, error } = usePromise(Mock.getInvoices, { resolve: true });
+  const {isLoading, data, error} = usePromise(() => Mock.getInvoices({ACCEPTED: 'TRUE'}), {resolve: true});
+  const [budget, setBudget] = React.useState(null);
+
+  React.useEffect(() => {
+    if (data) {
+      setBudget(_.orderBy(data, ['AMOUNT'], ['desc'])[0])
+    }
+  }, [data])
 
   return (
 
@@ -50,8 +59,8 @@ const Budget = ({ className, ...rest }) => {
       <CardContent>
 
         {
-          isLoading ?
-            <CardLoader />
+          budget === null ?
+            <CardLoader/>
             :
             <>
               <Grid
@@ -65,40 +74,40 @@ const Budget = ({ className, ...rest }) => {
                     gutterBottom
                     variant="h6"
                   >
-                    BUDGET
+                    Maior orçamento
                   </Typography>
                   <Typography
                     color="textPrimary"
                     variant="h3"
                   >
-                    $ {data[0].AMOUNT}
+                    $ {budget.AMOUNT.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Avatar className={classes.avatar}>
-                    <MoneyIcon />
+                    <MoneyIcon/>
                   </Avatar>
                 </Grid>
               </Grid>
-              <Box
-                mt={2}
-                display="flex"
-                alignItems="center"
-              >
-                <ArrowDownwardIcon className={classes.differenceIcon} />
-                <Typography
-                  className={classes.differenceValue}
-                  variant="body2"
-                >
-                  12%
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="caption"
-                >
-                  Since last month
-                </Typography>
-              </Box>
+              {/*<Box*/}
+              {/*  mt={2}*/}
+              {/*  display="flex"*/}
+              {/*  alignItems="center"*/}
+              {/*>*/}
+              {/*  <ArrowDownwardIcon className={classes.differenceIcon} />*/}
+              {/*  <Typography*/}
+              {/*    className={classes.differenceValue}*/}
+              {/*    variant="body2"*/}
+              {/*  >*/}
+              {/*    12%*/}
+              {/*  </Typography>*/}
+              {/*  <Typography*/}
+              {/*    color="textSecondary"*/}
+              {/*    variant="caption"*/}
+              {/*  >*/}
+              {/*    Since last month*/}
+              {/*  </Typography>*/}
+              {/*</Box>*/}
             </>
         }
 

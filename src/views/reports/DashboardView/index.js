@@ -9,7 +9,7 @@ import Page from 'src/components/Page';
 import Budget from './Budget';
 import LatestOrders from './LatestOrders';
 import LatestProducts from './LatestProducts';
-import Sales from './Sales';
+import Events from './Events';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
@@ -37,74 +37,73 @@ const Dashboard = () => {
           container
           spacing={3}
         >
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={3}*/}
+          {/*  sm={6}*/}
+          {/*  xl={3}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <Budget />*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={3}*/}
+          {/*  sm={6}*/}
+          {/*  xl={3}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <TotalCustomers />*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={3}*/}
+          {/*  sm={6}*/}
+          {/*  xl={3}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <TasksProgress />*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={3}*/}
+          {/*  sm={6}*/}
+          {/*  xl={3}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <TotalProfit />*/}
+          {/*</Grid>*/}
           <Grid
             item
-            lg={3}
-            sm={6}
+            lg={8}
+            md={12}
+            xl={9}
+            xs={12}
+          >
+            <Events />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
             xl={3}
             xs={12}
           >
+
             <Budget />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
+            <br/>
             <TotalCustomers />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TasksProgress />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalProfit />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <Sales />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
+            <br/>
             <TrafficByDevice />
+
+
           </Grid>
+
           <Grid
             item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts />
-          </Grid>
-          <Grid
-            item
-            lg={8}
+            lg={12}
             md={12}
-            xl={9}
+            xl={12}
             xs={12}
           >
             <LatestOrders />
