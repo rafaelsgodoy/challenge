@@ -58,7 +58,11 @@ const LatestOrders = ({className, ...rest}) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    ID
+                    Evento ID
+                  </TableCell>
+
+                  <TableCell>
+                    Vendedor ID
                   </TableCell>
                   <TableCell>
                     Valor
@@ -91,7 +95,10 @@ const LatestOrders = ({className, ...rest}) => {
                     key={order.ID}
                   >
                     <TableCell>
-                      {order.ID}
+                      {order.WEDDING_ID}
+                    </TableCell>
+                    <TableCell>
+                      {order.VENDOR_ID}
                     </TableCell>
                     <TableCell>
                       {order.AMOUNT.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}

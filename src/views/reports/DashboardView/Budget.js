@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
   colors,
-  makeStyles
+  makeStyles, Table, TableHead, TableRow, TableCell, TableBody, CardHeader
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MoneyIcon from '@material-ui/icons/Money';
@@ -22,7 +22,7 @@ import _ from 'loadsh';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-   // height: '100%'
+    // height: '100%'
   },
   avatar: {
     backgroundColor: '#E2645A',
@@ -40,14 +40,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Budget = ({className, ...rest}) => {
   const classes = useStyles();
-  const {isLoading, data, error} = usePromise(() => Mock.getInvoices({ACCEPTED: 'TRUE'}), {resolve: true});
+  const limit = 5;
+
+  const {isLoading, data, error} = usePromise(() => Mock.getCustomers({limit: limit}), {
+    resolve: true,
+    resolveCondition: [limit]
+  });
   const [budget, setBudget] = React.useState(null);
 
-  React.useEffect(() => {
-    if (data) {
-      setBudget(_.orderBy(data, ['AMOUNT'], ['desc'])[0])
-    }
-  }, [data])
+  // React.useEffect(() => {
+  //   if (data) {
+  //     setBudget(_.orderBy(data, ['AMOUNT'], ['desc'])[0])
+  //   }
+  // }, [data])
 
   return (
 
@@ -56,39 +61,42 @@ const Budget = ({className, ...rest}) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
+      <CardHeader title="Últimos Cadastros"/>
       <CardContent>
 
         {
-          budget === null ?
+          isLoading ?
             <CardLoader/>
             :
             <>
-              <Grid
-                container
-                justify="space-between"
-                spacing={3}
-              >
-                <Grid item>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="h6"
-                  >
-                    Maior orçamento
-                  </Typography>
-                  <Typography
-                    color="textPrimary"
-                    variant="h3"
-                  >
-                    $ {budget.AMOUNT.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Avatar className={classes.avatar}>
-                    <MoneyIcon/>
-                  </Avatar>
-                </Grid>
-              </Grid>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      ID
+                    </TableCell>
+                    <TableCell>
+                      Data
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
+                    data.map((el) => (
+                      <TableRow>
+                        <TableCell>
+                          {el.ID}
+                        </TableCell>
+                        <TableCell>
+                          {el.CREATED_AT}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+
+
+                </TableBody>
+              </Table>
               {/*<Box*/}
               {/*  mt={2}*/}
               {/*  display="flex"*/}

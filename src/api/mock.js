@@ -29,10 +29,27 @@ class Mock {
         values.forEach((el) => {
           data.push(...el.data);
         });
-        return _.groupBy(data, 'STYLE');
+         return data;
       });
   }
 
+
+  async getWeddingsGroupByType(params) {
+    const data = [];
+    const _p = new URLSearchParams(params).toString();
+
+    return Promise.all([
+      Api.get('https://sheet2api.com/v1/ByR2h1huRjyQ/fiap/wedding?' + _p),
+    ])
+      .then((values) => {
+        values.forEach((el) => {
+          data.push(...el.data);
+        });
+        return _.groupBy(data, 'STYLE');
+        // return data;
+      });
+
+  }
 
   async getCustomers(params) {
     const data = [];
@@ -61,8 +78,9 @@ class Mock {
         values.forEach((el) => {
           el.data.forEach(re => {
             data.push({
-              title: re.VENDOR_CATEGORY.replace("-"," ").toUpperCase(),
+              title: re.VENDOR_CATEGORY.replace("-", " ").toUpperCase(),
               date: re.BEGINS_AT,
+              data: re
             });
           })
 

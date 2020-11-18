@@ -26,10 +26,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TrafficByDevice = ({className, ...rest}) => {
+const EventsByType = ({className, ...rest}) => {
   const classes = useStyles();
   const theme = useTheme();
-  const {isLoading, data, error} = usePromise(Mock.getWeddings, {resolve: true});
+  const {isLoading, data, error} = usePromise(Mock.getWeddingsGroupByType, {resolve: true});
+
+  React.useEffect(() => {
+    console.log(data)
+  },[data])
 
   // const data2 = {
   //   datasets: [
@@ -199,8 +203,8 @@ const TrafficByDevice = ({className, ...rest}) => {
   );
 };
 
-TrafficByDevice.propTypes = {
+EventsByType.propTypes = {
   className: PropTypes.string
 };
 
-export default TrafficByDevice;
+export default EventsByType;

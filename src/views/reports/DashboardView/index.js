@@ -13,7 +13,7 @@ import Events from './Events';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
-import TrafficByDevice from './TrafficByDevice';
+import EventsByType from './EventsByType';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,7 +94,7 @@ const Dashboard = () => {
             <br/>
             <TotalCustomers />
             <br/>
-            <TrafficByDevice />
+            <EventsByType />
 
 
           </Grid>
