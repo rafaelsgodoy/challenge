@@ -19,10 +19,12 @@ import TabletIcon from '@material-ui/icons/Tablet';
 import {usePromise} from "promise-hook";
 import Mock from "../../../api/mock";
 import {Skeleton} from "@material-ui/lab";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles(() => ({
   root: {
-   // height: '100%'
+    // height: '100%'
   }
 }));
 
@@ -30,10 +32,77 @@ const EventsByType = ({className, ...rest}) => {
   const classes = useStyles();
   const theme = useTheme();
   const {isLoading, data, error} = usePromise(Mock.getWeddingsGroupByType, {resolve: true});
+  const [date, setDate] = React.useState(1);
 
-  React.useEffect(() => {
-    console.log(data)
-  },[data])
+  const [graphdata, setGraphdata] = React.useState({
+    "moderno": {
+      "value": 282,
+      "label": "Moderno"
+    },
+    "classico": {
+      "value": 2221,
+      "label": "Clássico"
+    },
+    "rustico": {
+      "value": 1258,
+      "label": "Rustico"
+    }
+  });
+
+  const handleChange = (event) => {
+    setDate(event.target.value);
+    switch (event.target.value) {
+      case 1:
+        setGraphdata({
+          "moderno": {
+            "value": 282,
+            "label": "Moderno"
+          },
+          "classico": {
+            "value": 2221,
+            "label": "Clássico"
+          },
+          "rustico": {
+            "value": 1258,
+            "label": "Rustico"
+          }
+        })
+        break;
+      case 7:
+        setGraphdata({
+          "moderno": {
+            "value": 12,
+            "label": "Moderno"
+          },
+          "classico": {
+            "value": 25,
+            "label": "Clássico"
+          },
+          "rustico": {
+            "value": 9,
+            "label": "Rustico"
+          }
+        })
+        break;
+      case 30:
+        setGraphdata({
+          "moderno": {
+            "value": 26,
+            "label": "Moderno"
+          },
+          "classico": {
+            "value": 32,
+            "label": "Clássico"
+          },
+          "rustico": {
+            "value": 18,
+            "label": "Rustico"
+          }
+        })
+        break;
+    }
+
+  };
 
   // const data2 = {
   //   datasets: [
@@ -101,7 +170,23 @@ const EventsByType = ({className, ...rest}) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Eventos por tipo"/>
+      <CardHeader
+        action={(
+          <>
+            {/*<InputLabel id="demo-simple-select-label">Age</InputLabel>*/}
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={date}
+              onChange={handleChange}
+            >
+              <MenuItem value={7}>Ultimos 7 dias</MenuItem>
+              <MenuItem value={30}>Ultimo mes</MenuItem>
+              <MenuItem value={1}>Desde o ínico</MenuItem>
+            </Select>
+          </>
+        )}
+        title="Eventos por tipo"/>
       <Divider/>
       {isLoading ?
         <div style={{
@@ -110,9 +195,9 @@ const EventsByType = ({className, ...rest}) => {
           justifyContent: "center",
           flexDirection: "column"
         }}>
-          <Skeleton style={ {
-            marginTop:"20px"
-          } } variant="circle" width={280} height={280}/>
+          <Skeleton style={{
+            marginTop: "20px"
+          }} variant="circle" width={280} height={280}/>
           <br/>
           <Skeleton width="80%"/>
           <Skeleton width="80%"/>
@@ -128,7 +213,7 @@ const EventsByType = ({className, ...rest}) => {
               data={{
                 datasets: [
                   {
-                    data: [data.rustico.length, data.classico.length, data.moderno.length],
+                    data: [graphdata.rustico.value, graphdata.classico.value, graphdata.moderno.value],
                     backgroundColor: [
                       '#E2645A',
                       '#86D0CB',
@@ -152,20 +237,20 @@ const EventsByType = ({className, ...rest}) => {
             {[
               {
                 title: 'Rustico',
-                value: data.rustico.length,
+                value: graphdata.rustico.value,
                 icon: LaptopMacIcon,
                 color: '#E2645A'
 
               },
               {
                 title: 'Clássico',
-                value: data.classico.length,
+                value: graphdata.classico.value,
                 icon: TabletIcon,
                 color: '#86D0CB'
               },
               {
                 title: 'Moderno',
-                value: data.moderno.length,
+                value: graphdata.moderno.value,
                 icon: PhoneIcon,
                 color: '#84B8E2'
               }

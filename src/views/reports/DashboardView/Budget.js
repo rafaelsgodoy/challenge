@@ -82,7 +82,7 @@ const Budget = ({className, ...rest}) => {
                 </TableHead>
                 <TableBody>
                   {
-                    data.map((el) => (
+                    data.slice(0,5).map((el) => (
                       <TableRow>
                         <TableCell>
                           {el.ID}
