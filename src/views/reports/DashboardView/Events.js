@@ -25,6 +25,9 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import {usePromise} from "promise-hook";
 import Mock from "../../../api/mock";
 import moment from "moment";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -35,13 +38,45 @@ const Events = ({className, ...rest}) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [event, setEvent] = React.useState(null);
-
-  const {isLoading, data, error} = usePromise(Mock.getEvents, {
+  const limit = 1;
+  const {isLoading, data, error} = usePromise(() => Mock.getEvents({limit: limit}), {
     resolve: true,
+    resolveCondition: [limit]
   });
+
+  const [eventos, setEventos] = React.useState(null);
+  const [labelCategoria, setLabelCategoria] = React.useState("todos");
+
+  const [labelStatus, setLabelStatus] = React.useState("todos");
+
+  React.useEffect(() => {
+    console.log("chamou aqui")
+    setEventos(data);
+  }, [data]);
 
   const handleClose = () => {
     setOpen(false)
+  }
+  const handleChangeCategoria = (event) => {
+    setLabelCategoria(event.target.value);
+    if (event.target.value === 'todos') {
+      setEventos(data);
+    } else {
+      setEventos(data.filter((el) => {
+        return el.data.VENDOR_CATEGORY === event.target.value
+      }))
+    }
+  }
+
+  const handleChangeStatus = (event) => {
+    setLabelStatus(event.target.value);
+    if (event.target.value === 'todos') {
+      setEventos(data);
+    } else {
+      setEventos(data.filter((el) => {
+        return el.data.STATUS === event.target.value
+      }))
+    }
   }
 
   return (
@@ -52,13 +87,46 @@ const Events = ({className, ...rest}) => {
       >
         <CardHeader
           title="Eventos"
+          action={(
+            <Box display="flex">
+              <div style={{marginRight: "50px"}}>
+                <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={labelCategoria}
+                  onChange={handleChangeCategoria}
+                >
+                  <MenuItem value={'todos'}>Todos</MenuItem>
+                  <MenuItem value={'assessoria-de-casamento'}>Acessoria</MenuItem>
+                  <MenuItem value={'espaco'}>Espaço</MenuItem>
+                  <MenuItem value={'lista-de-presentes'}>Lista de presentes</MenuItem>
+                </Select>
+              </div>
+
+              <div>
+                <InputLabel id="label-status">Status</InputLabel>
+                <Select
+                  labelId="label-status"
+                  id="status"
+                  value={labelStatus}
+                  onChange={handleChangeStatus}
+                >
+                  <MenuItem value={'todos'}>Todos</MenuItem>
+                  <MenuItem value={'CONFIRMED'}>Aceito</MenuItem>
+                  <MenuItem value={'CREATED'}>Criado</MenuItem>
+                  <MenuItem value={'CANCELED'}>Cancelado</MenuItem>
+                </Select>
+              </div>
+            </Box>
+          )}
         />
         <Divider/>
         <CardContent>
           <FullCalendar
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
-            events={data}
+            events={eventos}
             locale={'pt-br'}
             eventClick={(e) => {
 

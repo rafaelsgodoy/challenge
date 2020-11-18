@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
 const LatestOrders = ({className, ...rest}) => {
   const classes = useStyles();
   const limit = 10;
-  const {isLoading, data, error} = usePromise(() => Mock.getInvoices({limit: 10}), {
+  const {isLoading, data, error} = usePromise(() => Mock.getInvoices({limit: 1}), {
     resolve: true,
     resolveCondition: [limit]
   });
@@ -89,7 +89,7 @@ const LatestOrders = ({className, ...rest}) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((order) => (
+                {data.slice(0,10).map((order) => (
                   <TableRow
                     hover
                     key={order.ID}

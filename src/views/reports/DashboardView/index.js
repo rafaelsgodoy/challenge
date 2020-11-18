@@ -14,6 +14,7 @@ import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
 import EventsByType from './EventsByType';
+import Sales from './Sales';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,10 +90,9 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-
-            <Budget />
-            <br/>
             <TotalCustomers />
+            <br/>
+            <Budget />
             <br/>
             <EventsByType />
 
@@ -101,12 +101,22 @@ const Dashboard = () => {
 
           <Grid
             item
-            lg={12}
+            lg={8}
             md={12}
-            xl={12}
+            xl={9}
             xs={12}
           >
             <LatestOrders />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={3}
+            xs={12}
+          >
+            <Sales />
+
           </Grid>
         </Grid>
       </Container>
