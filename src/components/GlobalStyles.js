@@ -24,6 +24,10 @@ const useStyles = makeStyles(() => createStyles({
     '#root': {
       height: '100%',
       width: '100%'
+    },
+    '*': {
+      fontFamily: "Roboto , Helvetica , Arial, sans-serif ",
+
     }
   }
 }));
