@@ -20,6 +20,7 @@ import {
 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
 import {usePromise} from "promise-hook";
 import Mock from "../../../api/mock";
